@@ -161,8 +161,6 @@ Una consecuencia de la analogía es que **las topologías no se conservan**: los
    I(t) = I1(t) + I2(t) = corriente total (velocidad ẋ)
 ```
 
-Esta es una representación esquemática; el circuito dibujado a mano y su desarrollo se encuentran en [`calculo_matematico.pdf`](calculo_matematico.pdf).
-
 ### Variables y parámetros
 
 | Símbolo | Equivalente eléctrico | Interpretación fisiológica |
@@ -175,8 +173,6 @@ Esta es una representación esquemática; el circuito dibujado a mano y su desar
 | $C_s$ | Capacitancia (en paralelo con $F_0$–$R$) | Elasticidad del elemento en serie: tendón |
 | $I(t)=\dot{x}(t)$ | Corriente total | Velocidad de deformación |
 | $x(t)$, $x_1(t)$ | Cargas en $C_p$ y $C_s$ | Desplazamientos del elemento paralelo y del elemento en serie |
-
-> En los apuntes manuscritos las corrientes del circuito se denotan $x(t)$, $x_1(t)$ y $x_2(t)$; en este README se escriben $I(t)$, $I_1(t)$ e $I_2(t)$ para no confundirlas con los desplazamientos.
 
 ### Conjuntos de parámetros
 
@@ -251,8 +247,6 @@ $$
 $$
 F_s(s)=F_{s1}(s)+F_{s2}(s)=\frac{C_sRs+1-\alpha}{R(C_p+C_s)s+1}\,F(s).
 $$
-
-> El desarrollo manuscrito completo está en [`calculo_matematico.pdf`](calculo_matematico.pdf).
 
 ### 3. Función de transferencia y ecuación diferencial
 
@@ -330,8 +324,6 @@ Esto implica que **la atrofia simulada (mayor $R$) no se distingue por su valor 
 
 Ambos modelos son **estables**, pues su único polo es real y negativo. El polo del caso está $100$ veces más cerca del origen que el del control: al aumentar $R$ cien veces, la respuesta se vuelve cien veces más lenta. El tiempo de asentamiento se calculó como $t_s=\tau\ln\!\left[\dfrac{K-d}{0.02\,K}\right]$ para el escalón.
 
-> **[COMPLETAR]** Agrega aquí tu figura de la ubicación de los polos en el plano complejo (por ejemplo con `pzmap` o `plt.scatter` en Python) y tu bosquejo previo de la respuesta.
-
 ### 3. Predicciones analíticas ante el pulso de 1 V
 
 Para una entrada que vale $1\ \mathrm{V}$ entre $t=1$ s y $t=2$ s, las respuestas se obtienen de la solución del sistema de primer orden (cálculo analítico, útil como referencia para contrastar las simulaciones):
@@ -344,22 +336,6 @@ Para una entrada que vale $1\ \mathrm{V}$ entre $t=1$ s y $t=2$ s, las respuesta
 | En $t=4$ s | $\approx 0$ | $0.064$ |
 
 El control alcanza prácticamente el valor final $0.75\ \mathrm{V}$ al instante, mientras que el caso sube de forma exponencial con $\tau=1.1$ s, solo llega a $0.484\ \mathrm{V}$ cuando termina el pulso y luego decae lentamente.
-
-#### Verificación en MATLAB
-
-```matlab
-alpha = 0.25; Cs = 10e-6; Cp = 100e-6;
-R = [100 10e3];                           % control, caso
-nombre = ["control" "caso"];
-
-for k = 1:2
-    G = tf([Cs*R(k), 1-alpha], [R(k)*(Cp+Cs), 1]);
-    fprintf("%s\n", nombre(k));
-    disp(pole(G));          % polo
-    disp(zero(G));          % cero
-    disp(dcgain(G));        % ganancia estatica (= 0.75)
-end
-```
 
 [Volver al contenido](#contenido)
 
@@ -380,11 +356,7 @@ La entrada $F(t)$ se genera en Simulink con un **bloque generador de pulsos** co
 | Tiempo de simulación (`StopTime`) | $15\ \mathrm{s}$ |
 | Intervalo graficado | $t\in[0,10]\ \mathrm{s}$ |
 
-> **[COMPLETAR]** Indica el periodo, el ancho (%) y el retardo exactos configurados en el bloque generador de pulsos.
-
 Se emplea **exactamente la misma entrada** para el control y para el caso, de manera que las diferencias entre sus respuestas sean consecuencia exclusiva de $R$.
-
-> **[VERIFICAR con el docente]** El instructivo solicita la respuesta al **impulso unitario**. Como $G(s)$ es bipropia, su respuesta al impulso ideal contiene un término $d\,\delta(t)$ además del decaimiento exponencial, por lo que no es una señal finita que pueda graficarse directamente. El pulso rectangular de $1\ \mathrm{s}$ es una entrada finita que permite observar la misma dinámica. Confirma con tu docente que esta es la entrada que debe usarse.
 
 [Volver al contenido](#contenido)
 
@@ -403,7 +375,6 @@ Para las dos condiciones (control y caso) se construyen tres representaciones eq
 
 Los subsistemas **Control** y **Caso** del modelo entregan las salidas `F(t): Control CE`, `F(t): Control FT`, `F(t): Caso CE`, `F(t): Caso FT` y `PID(t): Caso`, que se comparan en osciloscopios (*Scope: Control* y *Scope: Caso*).
 
-> **[COMPLETAR]** Agrega capturas del modelo de Simulink, del circuito de Simscape y de los osciloscopios, e indica el nombre real de tu archivo `.slx`.
 
 ### Ejecución desde el cuaderno MATLAB
 
@@ -417,25 +388,12 @@ El cuaderno computacional ejecuta el modelo y envía al *Workspace* las señales
 | `x.FsC` | Respuesta del **caso** en lazo abierto |
 | `x.PID` | Respuesta del **caso con controlador** |
 
-```matlab
-clc; clear; close all; warning('off','all')
-open_system('system')
-parameters.StopTime = '15';
-parameters.Solver = 'ode15s';
-parameters.MaxStep = '1e-3';
-x = sim('system',parameters);
-
-plotsignals(x.t,x.F,x.Fs1,x.FsC,x.PID,'Respuestas')
-```
-
 La función `plotsignals`:
 
 1. representa gráficamente $F(t)$, el control, el caso y el sistema controlado;
 2. identifica las variables y sus unidades ($F(t)$ en $\mathrm{V}$, $t$ en $\mathrm{s}$);
 3. compara control, caso y sistema controlado con la leyenda $F(t)$, $F_s(t):Control$, $F_s(t):Caso$ y $PID(t):Tratamiento$; y
 4. guarda la figura en formato PDF (`Respuestasmatlab.pdf`).
-
-> **[COMPLETAR]** Indica el nombre real de tu cuaderno `.mlx` y de tu modelo `.slx`.
 
 [Volver al contenido](#contenido)
 
@@ -468,8 +426,6 @@ T(s)=\frac{K(s)\,G_{\text{caso}}(s)}{1+K(s)\,G_{\text{caso}}(s)},
 F_{s,\text{PID}}(s)=T(s)\,F_{s,\text{control}}(s).
 $$
 
-> Verifica que este esquema coincide con la conexión del subsistema *Caso* en tu modelo de Simulink; si difiere en algún detalle, documéntalo aquí.
-
 ### 2. Sintonización
 
 El controlador se sintoniza con la herramienta **Tune** del bloque *PID Controller* de Simulink, buscando una respuesta **estable** y una **reducción del error** entre el caso y la respuesta del individuo sano.
@@ -479,8 +435,6 @@ El controlador se sintoniza con la herramienta **Tune** del bloque *PID Controll
 | PID del caso | $0.223904745099563$ | $3558.19126457357$ | $0$ | Forma paralela, tiempo continuo, filtro derivativo $N=100$ (sin efecto, pues $k_D=0$) |
 
 Con $k_D=0$ el controlador es un **PI**: $K(s)=k_P+k_I/s=\dfrac{k_Ps+k_I}{s}$, con un cero en $s=-k_I/k_P\approx-15\,891\ \mathrm{s^{-1}}$.
-
-> **[COMPLETAR]** Captura de la ventana de *Tune* (por ejemplo `tune_pid.png`) y los ajustes del criterio de sintonización (tiempo de respuesta, ancho de banda y margen de fase, si aparecen).
 
 ### 3. Función de transferencia en lazo cerrado
 
@@ -509,28 +463,6 @@ Como verificación independiente, se implementan en Python (Visual Studio Code) 
 4. construye el sistema del caso en lazo cerrado con la respuesta del control como referencia;
 5. imprime las funciones de transferencia, los polos, los valores derivados y una tabla de verificación; y
 6. genera la figura y la guarda como `Respuestas_python.pdf`.
-
-Fragmento principal:
-
-```python
-alpha = 0.25
-Cs,Cp = 10E-6, 100E-6
-R_control, R_caso = 100, 10E3
-
-def planta(R,Cs,Cp,alpha):
-    num = [Cs*R, 1-alpha]
-    den = [R*(Cp+Cs), 1]
-    return ctrl.tf(num,den)
-
-sysControl = planta(R_control,Cs,Cp,alpha)
-sysCaso = planta(R_caso,Cs,Cp,alpha)
-
-kP,kI,kD,Nf = 0.223904745099563, 3558.19126457357, 0, 100
-numPID = [kP,kI]
-denPID = [1,0]
-PID = ctrl.tf(numPID,denPID)
-sysPID = ctrl.feedback(ctrl.series(PID,sysCaso),1,sign = -1)
-```
 
 Resultados que imprime el código (comparados con el cálculo analítico y con la lectura aproximada de la gráfica de MATLAB):
 
@@ -565,12 +497,6 @@ Se elabora con BioRender un diagrama del sistema musculoesquelético que relacio
 | Desplazamiento | $x(t)$, $x_1(t)$ y deformación del amortiguador $x(t)-x_1(t)$ | Cargas $q(t)$ de los capacitores |
 | Fuerza generada y transmitida | $F_0(t)$ y $F(t)$ | Voltajes $F_0(t)$ y $F(t)$ |
 
-> **[COMPLETAR]** Inserta tu diagrama, por ejemplo `diagrama_biologico.png`:
->
-> `![Diagrama biológico del modelo musculoesquelético](diagrama_biologico.png)`
->
-> Si usas íconos de BioRender, cita la plataforma conforme a sus condiciones de uso.
-
 [Volver al contenido](#contenido)
 
 ---
@@ -581,10 +507,6 @@ Se elabora con BioRender un diagrama del sistema musculoesquelético que relacio
 ### 1. Respuesta en lazo abierto
 
 Se aplica la misma entrada (pulso de $1\ \mathrm{V}$ entre $t=1$ s y $t=2$ s) al control y al caso, y se registra $F_s(t)$.
-
-> **[COMPLETAR]** Figura de lazo abierto y lazo cerrado (MATLAB y Python), por ejemplo:
->
-> `![Respuestas](Respuestasmatlab.png)`
 
 **Observaciones.**
 
@@ -622,8 +544,6 @@ Se comparan las respuestas obtenidas con (a) las ecuaciones del sistema en Simul
 Las diferencias que aparezcan pueden asociarse con el método numérico (*solver*), el paso máximo de integración o la implementación de los modelos.
 
 ### Archivos de resultados
-
-> **[COMPLETAR]** Ajusta los nombres si tus archivos finales son otros.
 
 | Resultado | MATLAB/Simulink | Python |
 |---|---|---|
@@ -705,9 +625,9 @@ La práctica sigue la secuencia de 16 actividades del instructivo (marca las que
 ### Etapa 1. Modelo y análisis
 
 - [ ] 1. Identificar los elementos $F_0(t)$, $F(t)$, $R$, $C_p$, $C_s$, $x(t)$, $x_1(t)$ y describir su función mecánica.
-- [x] 2. Construir el circuito equivalente con la analogía fuerza–voltaje.
-- [x] 3. Formular las ecuaciones del sistema y verificar que el circuito describa la misma dinámica.
-- [x] 4. Obtener $G(s)$ por superposición para el control y el caso.
+- [ ] 2. Construir el circuito equivalente con la analogía fuerza–voltaje.
+- [ ] 3. Formular las ecuaciones del sistema y verificar que el circuito describa la misma dinámica.
+- [ ] 4. Obtener $G(s)$ por superposición para el control y el caso.
 - [ ] 5. Calcular la respuesta final y el error en estado estacionario, y analizar el efecto de $R$.
 - [ ] 6. Calcular los polos, ubicarlos en el plano complejo y determinar la estabilidad.
 
@@ -718,14 +638,14 @@ La práctica sigue la secuencia de 16 actividades del instructivo (marca las que
 
 ### Etapa 3. Control
 
-- [x] 9. Construir el sistema de control con retroalimentación negativa y bloque PID.
-- [x] 10. Sintonizar el PID con *Tune* y registrar $k_P$, $k_I$, $k_D$ y la evidencia.
+- [ ] 9. Construir el sistema de control con retroalimentación negativa y bloque PID.
+- [ ] 10. Sintonizar el PID con *Tune* y registrar $k_P$, $k_I$, $k_D$ y la evidencia.
 - [ ] 11. Analizar las respuestas en lazo cerrado.
 
 ### Etapa 4. Reproducción, verificación y documentación
 
-- [x] 12. Desarrollar el cuaderno de MATLAB y la función de graficación (figuras en PDF).
-- [x] 13. Implementar el código en Python y comparar con MATLAB/Simulink.
+- [ ] 12. Desarrollar el cuaderno de MATLAB y la función de graficación (figuras en PDF).
+- [ ] 13. Implementar el código en Python y comparar con MATLAB/Simulink.
 - [ ] 14. Realizar la verificación cruzada de las cinco implementaciones.
 - [ ] 15. Elaborar el diagrama biológico.
 - [ ] 16. Documentar en GitHub: este `README.md` y un `CITATION.cff` con los datos del alumno y del repositorio.
@@ -746,13 +666,11 @@ Organización **sugerida**, a partir de los elementos que solicita el instructiv
 ├── DeLaCruz20210777.mlx              # Cuaderno MATLAB
 ├── DeLaCruz20210777.pdf              # Exportación del cuaderno
 ├── system.slx                        # Modelo Simulink (ecuaciones, función de transferencia, control, Simscape)
-├── practica_tres.py                  # Implementación en Python
+├── DeLaCruz20210777.py               # Implementación en Python
 ├── calculo_matematico.pdf            # Desarrollo manuscrito: circuito y superposición
 ├── diagrama_biologico.png            # Diagrama biológico (BioRender)
-├── tune_pid.png                      # Evidencia de sintonización
 ├── Respuestasmatlab.pdf              # Figura generada con MATLAB
 ├── Respuestas_python.pdf             # Figura generada con Python
-└── evidencias/                       # Capturas de Simulink, Simscape y simulaciones
 ```
 
 **Criterio de nombres:** los nombres de archivos de esta estructura son **propuestas organizativas**. Si usas otros nombres o subcarpetas, actualiza las rutas en este README.
@@ -771,8 +689,6 @@ Organización **sugerida**, a partir de los elementos que solicita el instructiv
 - **Python** y **Visual Studio Code**, con las bibliotecas `numpy`, `control` y `matplotlib`.
 - **Git y GitHub**, para organizar y presentar el repositorio.
 - **BioRender** o herramienta equivalente, para el diagrama biológico.
-
-Las versiones mínimas del software no se especifican en el instructivo. **[COMPLETAR]** Indica las versiones que usaste (MATLAB, Python, bibliotecas).
 
 [Volver al contenido](#contenido)
 
