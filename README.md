@@ -2,10 +2,6 @@
 
 # Práctica 3 — Modelado y control del sistema musculoesquelético mediante la analogía fuerza–voltaje
 
-Repositorio académico de la asignatura **Modelado de Sistemas Fisiológicos**, correspondiente al programa de **Ingeniería Biomédica** del Tecnológico Nacional de México / Instituto Tecnológico de Tijuana. La práctica integra modelado mecánico, analogías electromecánicas, análisis de estabilidad, diseño de un controlador PID, simulación computacional *in silico* y verificación cruzada entre plataformas.
-
-El caso de estudio representa un **compartimento musculoesquelético** mediante el modelo viscoelástico de Khoo (Figura 5.3 del instructivo): un elemento contráctil activo $F_0(t)=\alpha F(t)$, un amortiguador $R$ y dos elementos elásticos, uno en paralelo ($C_p$) y otro en serie ($C_s$). Mediante la analogía **fuerza → voltaje**, el modelo se estudia como un circuito eléctrico. Se comparan dos condiciones —un **individuo sano** (control) y un **caso simulado de atrofia muscular** (caso)— que difieren **únicamente en la resistencia $R$** ($100\ \Omega$ frente a $10\ \mathrm{k}\Omega$), y se diseña un controlador PID que busca reducir la diferencia entre la respuesta del caso y la del control.
-
 **Docente:** Dr. Paul Antonio Valle Trujillo  
 **Correo:** paul.valle@tectijuana.edu.mx  
 **Departamento:** Ingeniería Eléctrica y Electrónica  
@@ -16,6 +12,10 @@ El caso de estudio representa un **compartimento musculoesquelético** mediante 
 
 **Repositorio de la asignatura:** https://github.com/DrPaulValle/MSF-IBF1020  
 **Sede:** Blvd. Alberto Limón Padilla s/n, Tijuana, C. P. 22454, B. C., México.
+
+Repositorio académico de la asignatura **Modelado de Sistemas Fisiológicos**, correspondiente al programa de **Ingeniería Biomédica** del Tecnológico Nacional de México / Instituto Tecnológico de Tijuana. La práctica integra modelado mecánico, analogías electromecánicas, análisis de estabilidad, diseño de un controlador PID, simulación computacional *in silico* y verificación cruzada entre plataformas.
+
+El caso de estudio representa un **compartimento musculoesquelético** mediante el modelo viscoelástico de Khoo (Figura 5.3 del instructivo): un elemento contráctil activo $F_0(t)=\alpha F(t)$, un amortiguador $R$ y dos elementos elásticos, uno en paralelo ($C_p$) y otro en serie ($C_s$). Mediante la analogía **fuerza → voltaje**, el modelo se estudia como un circuito eléctrico. Se comparan dos condiciones —un **individuo sano** (control) y un **caso simulado de atrofia muscular** (caso)— que difieren **únicamente en la resistencia $R$** ($100\ \Omega$ frente a $10\ \mathrm{k}\Omega$), y se diseña un controlador PID que busca reducir la diferencia entre la respuesta del caso y la del control.
 
 
 ---
