@@ -17,9 +17,6 @@ El caso de estudio representa un **compartimento musculoesquelético** mediante 
 **Repositorio de la asignatura:** https://github.com/DrPaulValle/MSF-IBF1020  
 **Sede:** Blvd. Alberto Limón Padilla s/n, Tijuana, C. P. 22454, B. C., México.
 
-> **Cómo usar este README:** todo lo marcado como **[COMPLETAR]** corresponde a evidencia propia de la práctica (capturas, nombres de archivos, ajustes de *Tune*, resultados de Simulink y Simscape) que no se puede deducir de lo ya desarrollado. Busca ese texto en el archivo y reemplázalo con tus datos. Las secciones de modelo matemático, polos, error y predicciones analíticas están calculadas a partir de los parámetros del instructivo, y las ganancias PID y los resultados de Python corresponden a tus valores y a tu código.
->
-> **[VERIFICAR con el docente]** El instructivo pide la respuesta al *impulso unitario*; el cuaderno de MATLAB utiliza un **pulso rectangular de 1 V entre $t=1$ s y $t=2$ s**. Consulta la sección [Señal de excitación](#senales) y confirma que esa es la entrada esperada.
 
 ---
 
