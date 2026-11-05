@@ -294,53 +294,6 @@ Con $\alpha=0.25$, $C_s=10\ \mu\mathrm{F}$, $C_p=100\ \mu\mathrm{F}$:
 
 ---
 
-<a id="analisis"></a>
-## Análisis de error y estabilidad
-
-### 1. Respuesta final y error en estado estacionario
-
-Para una entrada escalón unitario, $F(s)=1/s$, y si el sistema es estable puede aplicarse el teorema del valor final:
-
-$$
-\lim_{t\to\infty}F_s(t)=\lim_{s\to0}s\,G(s)\frac{1}{s}=G(0)=1-\alpha=0.75
-$$
-
-**para el control y para el caso**, ya que $G(0)$ no depende de $R$ (en régimen permanente los capacitores se comportan como circuitos abiertos y la resistencia no interviene). Por tanto:
-
-$$
-e_{ss}^{\,\text{caso-control}}=F_{s,\text{control}}(\infty)-F_{s,\text{caso}}(\infty)=0.75-0.75=0,
-\qquad
-e_{ss}^{\,\text{entrada}}=1-G(0)=\alpha=0.25.
-$$
-
-Esto implica que **la atrofia simulada (mayor $R$) no se distingue por su valor final**, sino por su **dinámica transitoria**, que depende de $R$ a través de la constante de tiempo.
-
-### 2. Polos, ceros y estabilidad
-
-| Condición | $\tau$ (s) | Polo ($\mathrm{s^{-1}}$) | Cero ($\mathrm{s^{-1}}$) | Salto inicial $d$ | $t_s$ (2 %) (s) |
-|---|---:|---:|---:|---:|---:|
-| Control | $0.011$ | $-90.909$ | $-750$ | $0.0909$ | $\approx 0.042$ |
-| Caso | $1.1$ | $-0.909$ | $-7.5$ | $0.0909$ | $\approx 4.16$ |
-
-Ambos modelos son **estables**, pues su único polo es real y negativo. El polo del caso está $100$ veces más cerca del origen que el del control: al aumentar $R$ cien veces, la respuesta se vuelve cien veces más lenta. El tiempo de asentamiento se calculó como $t_s=\tau\ln\!\left[\dfrac{K-d}{0.02\,K}\right]$ para el escalón.
-
-### 3. Predicciones analíticas ante el pulso de 1 V
-
-Para una entrada que vale $1\ \mathrm{V}$ entre $t=1$ s y $t=2$ s, las respuestas se obtienen de la solución del sistema de primer orden (cálculo analítico, útil como referencia para contrastar las simulaciones):
-
-| Magnitud | Control (V) | Caso (V) |
-|---|---:|---:|
-| Justo después de $t=1$ s (salto inicial $d\cdot F$) | $0.091$ → llega a $\approx 0.75$ en unos $\mathrm{ms}$ | $0.091$ |
-| En $t=2$ s, antes de que baje el pulso | $0.75$ | $0.484$ |
-| Justo después de $t=2$ s | $\approx 0$ | $0.394$ |
-| En $t=4$ s | $\approx 0$ | $0.064$ |
-
-El control alcanza prácticamente el valor final $0.75\ \mathrm{V}$ al instante, mientras que el caso sube de forma exponencial con $\tau=1.1$ s, solo llega a $0.484\ \mathrm{V}$ cuando termina el pulso y luego decae lentamente.
-
-[Volver al contenido](#contenido)
-
----
-
 <a id="senales"></a>
 ## Señal de excitación y condiciones de simulación
 
